@@ -44,7 +44,7 @@ def TrainW2VModel(book_name, corpus_list, vector_size,window_size,output_path):
 
     # fine-tune the model on the new corpus
     #fine_tuned_model.train(corpus, total_examples=fine_tuned_model.corpus_count, epochs=10)
-    fine_tuned_model = Word2Vec(new_list, vector_size=vector_size, window=window_size, min_count=5, workers=4, epochs=10, negative=10)
+    fine_tuned_model = Word2Vec(new_list, vector_size=vector_size, window=window_size, min_count=1, workers=4, epochs=10, negative=10)
     fine_tuned_model.wv.save_word2vec_format(output_text_file, binary=False)
 
     # Open up that text file and convert to JSON

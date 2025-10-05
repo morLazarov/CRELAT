@@ -71,8 +71,9 @@ def inference_bert(entities_contexts, model = 'bert-base-uncased'):
             tokens_tensor = torch.tensor([indexed_tokens])
 
             # Step 5: Move the model and input tensors to the GPU
-            model.to('cuda')
-            tokens_tensor = tokens_tensor.to('cuda')
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            model.to(device)
+            tokens_tensor = tokens_tensor.to(device)
 
             # Step 6: Obtain the model's output
             with torch.no_grad():

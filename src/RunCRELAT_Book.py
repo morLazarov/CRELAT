@@ -53,10 +53,10 @@ def main():
 # entities_path = '/home/omrirafa/CRELAT/test/Harry Potter 1/Entities'
 # book_name = 'Harry Potter 1'
 # output_dir = '/home/omrirafa/CRELAT/test/output/Harry Potter 1'
-book_path = '../../Data/Short_Stories/The Lottery/The Lottery.txt'
-entities_path = '../../Data/Short_Stories/The Lottery/Entities'
-book_name = 'The Lottery'
-output_dir = '/home/omrirafa/CRELAT/test/output/The Lottery'
+book_path = '../Data/The Model Millionaire/The Model Millionaire'
+entities_path = '../Data/The Model Millionaire/Entities'
+book_name = 'The Model Millionaire'
+output_dir = '../output/The Model Millionaire'
 
 
 Book1 = Book.Book(book_path, entities_path, book_name)

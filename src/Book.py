@@ -91,6 +91,7 @@ class Book:
         self.w2v_pairs = W2V.GenW2V(self.entities,self.w2v_vectors)
     def Gen_Bert_Pairs(self):
         self.bert_pairs_average_ent_emb = BERT_Inference_Without_Finetune.Gen_Bert_Pairs(self.entities_embeddings_averaged_bert)
+        self.cls_averaged_bert = to_1d_tensors(self.cls_averaged_bert)
         self.bert_pairs_average_cls = BERT_Inference_Without_Finetune.Gen_Bert_Pairs(self.cls_averaged_bert)
 
     def PloHM(self,data_sel,save_plot,save_path):
@@ -199,6 +200,18 @@ class Book:
 
             self.entities_embeddings_averaged_bert[entity] = average_tensor_ent_embeddings
             self.cls_averaged_bert[entity] = average_tensor_cls
+#win_size = 7
+#[i am harry and i like hemaiony]
+#....
+# inference
+
+#[i am harry and i like hemaiony] -> [emb0, emb1.....,emb6, cls]
+#....
+
+#model 1 entity embedding -
+#
+
+
 
     def ClusterList(self,data_sel,save_path,n_clusters):
         if data_sel==0:
@@ -335,6 +348,21 @@ class Book:
             new_list.sort(key=lambda x: x[2])
             return new_list
 
+        def pair_exists_in_list(char1, char2, reference_list):
+            """
+            Check if a given pair of characters exists in the reference list.
+
+            :param char1: First character
+            :param char2: Second character
+            :param reference_list: A list of lists in the format [["charA", "charB", val], ...]
+            :return: True if the pair (order-independent) exists in reference_list, else False
+            """
+            # Convert reference_list into a set of frozensets (ignoring values)
+            reference_set = {frozenset([a, b]) for a, b, _,_ in reference_list}
+
+            # Check if the given character pair exists in reference_set
+            return frozenset([char1, char2]) in reference_set
+
         new_list_cooc = append_and_sort(data_cooc, clusters_labels_cooc)
         new_list_w2v = append_and_sort(data_w2v, clusters_labels_w2v)
         new_list_bert_ent_emb = append_and_sort(data_bert_ent_emb, clusters_labels_bert_ent_emb)
@@ -365,11 +393,23 @@ class Book:
             key = frozenset([charA, charB])
             if key in values_dict:
                 values = values_dict[key]
-                if len(values) == 6:
+                cooc_exist = pair_exists_in_list(charA, charB,new_list_cooc)
+                w2v_exist = pair_exists_in_list(charA, charB,new_list_w2v)
+                if not(w2v_exist) :
                     # Giving couples with no CoOc value 0 with cluster that have the lowest center
-                    lowest_value = min(clusters_centers_cooc1)
-                    lowest_index = list(clusters_centers_cooc1).index(lowest_value)
-                    values = [0, lowest_index] + values
+                    lowest_value_w2v = min(clusters_centers_w2v1)
+                    lowest_index_w2v = list(clusters_centers_w2v1).index(lowest_value_w2v)
+                    if not(cooc_exist):
+                        # Giving couples with no CoOc value 0 with cluster that have the lowest center
+                        lowest_value_cooc = min(clusters_centers_cooc1)
+                        lowest_index_cooc = list(clusters_centers_cooc1).index(lowest_value_cooc)
+                        values = [0, lowest_index_cooc,0, lowest_index_w2v]+values
+                    else:
+                        values = [values[0],values[1],0,lowest_index_w2v,values[2],values[3],values[4],values[5]]
+                elif not(cooc_exist):
+                    lowest_value_cooc = min(clusters_centers_cooc1)
+                    lowest_index_cooc = list(clusters_centers_cooc1).index(lowest_value_cooc)
+                    values = [0, lowest_index_cooc]  + values
                 modified_rows.append([charA, charB, values[0], values[1], values[2], values[3], values[4], values[5], values[6], values[7]])
                 values_dict.pop(key)  # Remove the used values from the dictionary
 
@@ -379,3 +419,13 @@ class Book:
                                    'Cosine Similarity Cluster', 'BERT - Entity Embedding Similarity', 'BERT - Entity Embedding Cluster', 'BERT - CLS Similarity', 'BERT - CLS Similarity Cluster'])
         df.to_csv(save_path, index=False, sep='\t')
         print("!")
+def to_1d_tensors(d):
+    out = {}
+    for k, v in d.items():
+        if v.ndim == 2 and 1 in v.shape:
+            out[k] = v.flatten()  # from (1, D) or (D, 1) -> (D,)
+        elif v.ndim > 1 and all(s == 1 for s in v.shape[1:]):
+            out[k] = v.squeeze()  # handle weird extra singleton dims
+        else:
+            out[k] = v  # already 1D (or truly 2D), leave it
+    return out

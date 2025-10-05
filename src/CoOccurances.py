@@ -31,8 +31,10 @@ def generate_idx_dict(text, found_names_full):
     '''
     res = dict()
     for i, word in enumerate(text):
+        if word=="matilda":
+            print(1)
         for k, v in found_names_full.items():
-            if word not in v:
+            if not(word in v):
                 continue
             res[i] = k
     return res

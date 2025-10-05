@@ -16,12 +16,14 @@ def Cluster(data, n_cluters):
 
     values = [a[2] for a in data]
     values = [[c] for c in values]
+    if len(values)==1:
+        clusters_labels=[0]
+        clusters_centers=[0.9]
+    else:
+        kmeans.fit(values)
+        labels = kmeans.labels_.tolist()
+        clusters_labels = labels
 
-    kmeans.fit(values)
-    labels = kmeans.labels_.tolist()
-    clusters_labels = labels
-
-
-    clusters_centers =  kmeans.cluster_centers_
+        clusters_centers =  kmeans.cluster_centers_
     return clusters_labels, clusters_centers
 
