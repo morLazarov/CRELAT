@@ -3,4 +3,3 @@ laura
 alan		trevor
 baron		hausberg
 gustave		naudin
-colonel

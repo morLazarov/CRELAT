@@ -48,10 +48,15 @@ def main():
 #    main()
 
 
-book_path = '../Data/Short_Stories/Model Millionaire/Model Millionaire.txt'
-entities_path = '../Data/Short_Stories/Model Millionaire/entities.txt'
-book_name = 'Model Millionaire'
-output_dir = '../output/Model Millionaire'
+#book_path = '../Data/Short_Stories/Model Millionaire/Model Millionaire.txt'
+#entities_path = '../Data/Short_Stories/Model Millionaire/entities.txt'
+#book_name = 'Model Millionaire'
+#output_dir = '../output/Model Millionaire'
+
+book_path = '../Data/Short_Stories/The Open Window/The Open Window.txt'
+entities_path = '../Data/Short_Stories/The Open Window/entities.txt'
+book_name = 'The Open Window'
+output_dir = '../output/The Open Window'
 
 
 Book1 = Book.Book(book_path, entities_path, book_name)
