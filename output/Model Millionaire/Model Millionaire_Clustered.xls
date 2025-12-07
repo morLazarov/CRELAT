@@ -1,4 +1,4 @@
-char1	char2	Co-Occurances	Co-Occurances Cluster	Cosine Similarity	Cosine Similarity Cluster	BERT - Entity Embedding Similarity	BERT - Entity Embedding Cluster	BERT - CLS Similarity	BERT - CLS Similarity Cluster	Variance Between Cluster Numbers
+char1	char2	Co-Occurances	Co-Occurances Cluster	Cosine Similarity	Cosine Similarity Cluster	BERT - Entity Embedding Similarity	BERT - Entity Embedding Cluster	BERT - CLS Similarity	BERT - CLS Similarity Cluster	Variance Between Clusters
 baron	laura	1	0	0.9120791184012885	2	0.8807356	2	0.9024109	2	1.0
 gustave	hughie	2	0	0.9049110476969585	2	0.8496027	1	0.7782589	0	0.9166666666666666
 colonel	hughie	3	0	0.9093964683427823	2	0.90536743	3	0.9757746	4	2.9166666666666665

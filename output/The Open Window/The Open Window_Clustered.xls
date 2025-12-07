@@ -1,4 +1,4 @@
-char1	char2	Co-Occurances	Co-Occurances Cluster	Cosine Similarity	Cosine Similarity Cluster	BERT - Entity Embedding Similarity	BERT - Entity Embedding Cluster	BERT - CLS Similarity	BERT - CLS Similarity Cluster	Variance Between Cluster Numbers
+char1	char2	Co-Occurances	Co-Occurances Cluster	Cosine Similarity	Cosine Similarity Cluster	BERT - Entity Embedding Similarity	BERT - Entity Embedding Cluster	BERT - CLS Similarity	BERT - CLS Similarity Cluster	Variance Between Clusters
 bertie	ronnie	1	0	0.43163913852722546	3	0.7146125	1	0.6235179	0	2.0
 mrs.	vera	1	0	0.18651826406191763	1	0.7560182	2	0.73005104	1	0.6666666666666666
 bertie	framton	1	0	0.5079969602832793	3	0.846162	4	0.89011246	3	3.0
