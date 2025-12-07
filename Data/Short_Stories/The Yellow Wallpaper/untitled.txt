@@ -1,0 +1,45 @@
+For Incoming Commands:
+Buffer per agent with the size of used channels (up to 4) - Cmd+Data
+When there is no collision the transaction should bypass the buffer.
+Need to define what is the minimal gap between 2 commands? (in ning)
+
+For Incoming Credits
+(Weighted? Configurable) Round Robin per Channel, each command that was chosen by the arbiter sets its agent bit in the round robin vector
+Need to solve TCE fetch priority - 2 State machines will be TCE Only, each state machine dedicated to a specific agent.
+
+SARB - Outgoing Command:
+Sarb needs to get port/agent bits (from artx?) to determine what is the target
+ Round robin per agent, then on a masked fsm_complete vector use the current sarb logic
+Credits counter per agent
+
+ASB Addr:
+Need to have base address for PLA, 2 ICBs and 2 PxL
+
+Ordering:
+Expanding the NID by 2 more bits which represents the agent id, PBCPX should generate the agent-ID, NORD should use the new 10 bits NID
+Fetch response ordering?
+
+XCMDs
+Subunit field determines the agent, Coordinate the agent id with SARB
+
+IO/CA Hold:
+Add pins to support all agents.
+Add Logic that sees both CA Held are asserted before sending it back
+
+Fence/Lock:
+No lock for ICB/PLA
+Each agent should be isolated , separate AIB fence
+
+Stories:
+PBCPX uArch - 8
+PBCNX uArch - 8
+Add New AIB Ports (NCRX,NDRX, SCTX, SDTX, NCRD,SCRD) - 1
+Buffers and arbitration (including Bypass) (NCRX Main, NDRX) - 3
+Resource Allocation(Configurable) and Credits Return Logic (ARTX , NCRD, GREG/AREG, ATT) - 5
+Add Port-ID (PBCPX) - 1
+Add Port-ID and Ordering enhancements (PBCNX) - 2
+SARB Support (Masked Vector per agent and arbitration and credit counter per agent) - 3
+Subunit Decode for XCMD(SXRQ -> SXCL->SARB) - 3
+ASB Address - 2
+Multiple IO/CA HOLD - 1
+Fence place holder - ?

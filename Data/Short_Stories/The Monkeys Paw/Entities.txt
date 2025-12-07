@@ -1,0 +1,6 @@
+Mr White,Father,husband,old man,white			
+Mrs White,wife,mother,old lady
+Herbert White,Son,Herbert
+Sergeant Major Morris,the sergeant major,Morris,the soilder,the sergeant
+the stranger
+

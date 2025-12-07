@@ -1,2 +1,5 @@
 test/
 src/results
+.idea/
+CRELAT_venv/
+src/__pycache__/
