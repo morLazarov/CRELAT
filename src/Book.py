@@ -24,7 +24,7 @@ class Book:
         file = open(Entities_file_path, encoding="utf-8")
         entities = []
         for line in file:
-            stripped_line = line.strip()
+            stripped_line = line.lower().strip()
             line_list = stripped_line.split()
             entities.append(line_list)
         file.close()
@@ -417,6 +417,8 @@ class Book:
         df = pd.DataFrame(modified_rows,
                           columns=['char1', 'char2', 'Co-Occurances', 'Co-Occurances Cluster', 'Cosine Similarity',
                                    'Cosine Similarity Cluster', 'BERT - Entity Embedding Similarity', 'BERT - Entity Embedding Cluster', 'BERT - CLS Similarity', 'BERT - CLS Similarity Cluster'])
+        variance_column = df[['Co-Occurances Cluster', 'Cosine Similarity Cluster', 'BERT - Entity Embedding Cluster', 'BERT - CLS Similarity Cluster']].var(axis=1)
+        df['Variance Between Clusters'] = variance_column
         df.to_csv(save_path, index=False, sep='\t')
         print("!")
 def to_1d_tensors(d):
