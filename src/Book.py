@@ -4,6 +4,7 @@ import string
 import nltk
 from gensim.parsing.preprocessing import remove_stopwords
 from nltk.corpus import stopwords
+import numpy as np
 import CoOccurances
 import W2V
 nltk.download('stopwords')
@@ -210,7 +211,18 @@ class Book:
 
 #model 1 entity embedding -
 #
+    @staticmethod
+    def calculate_min_diff_between_matrix_columns(mat: np.array):
+        get_column = lambda i: mat[:,i]
+        diffs = []
 
+        columns = mat.shape[1]
+        for i in range(columns):
+            for j in range(i):
+                diffs.append(np.abs((get_column(i)-get_column(j))))
+        
+        return np.mean(diffs, axis=0)
+                
 
 
     def ClusterList(self,data_sel,save_path,n_clusters):
@@ -417,8 +429,8 @@ class Book:
         df = pd.DataFrame(modified_rows,
                           columns=['char1', 'char2', 'Co-Occurances', 'Co-Occurances Cluster', 'Cosine Similarity',
                                    'Cosine Similarity Cluster', 'BERT - Entity Embedding Similarity', 'BERT - Entity Embedding Cluster', 'BERT - CLS Similarity', 'BERT - CLS Similarity Cluster'])
-        variance_column = df[['Co-Occurances Cluster', 'Cosine Similarity Cluster', 'BERT - Entity Embedding Cluster', 'BERT - CLS Similarity Cluster']].var(axis=1)
-        df['Variance Between Clusters'] = variance_column
+        clusters_matrix = df[['Co-Occurances Cluster', 'Cosine Similarity Cluster', 'BERT - Entity Embedding Cluster', 'BERT - CLS Similarity Cluster']].to_numpy()
+        df['Average Diff Between Clusters'] = self.calculate_min_diff_between_matrix_columns(clusters_matrix)
         df.to_csv(save_path, index=False, sep='\t')
         print("!")
 def to_1d_tensors(d):
